@@ -70,5 +70,12 @@ spec:
                 }
             }
         }
+
+        stage('Deploy Application') {
+            steps {
+                container('kubectl') {
+                    sh 'kubectl apply -f helm-charts/node-app-chart/values.yaml'
+                }
+            }
     }
 }
