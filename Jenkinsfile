@@ -30,7 +30,8 @@ spec:
         }
     }
     environment {
-        HARBOR_REGISTRY = "test-harbor.lra-poc.com/library/node-app"
+        HARBOR_REGISTRY = "test-harbor.lra-poc.com"
+        IMAGE_NAME = "library/node-app"
         IMAGE_TAG = "latest"
     }
     stages {
@@ -43,7 +44,7 @@ spec:
             steps {
                 container('docker') {
                     dir('node-app')
-                        sh "docker build -t ${HARBOR_REGISTRY}:${IMAGE_TAG} ."
+                        sh "docker build -t $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG ."
                 }
             }
         }
@@ -51,7 +52,7 @@ spec:
             steps {
                 container('docker') {
                     withDockerRegistry([credentialsId: 'harbor-credentials', url: 'https://test-harbor.lra-poc.com']) {
-                        sh "docker push ${HARBOR_REGISTRY}:${IMAGE_TAG}"
+                        sh "docker push $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
                     }
                 }
             }
