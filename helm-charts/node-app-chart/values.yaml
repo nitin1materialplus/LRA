@@ -24,6 +24,12 @@ serviceAccount:
   create: true
   name: "node-app-sa"
 
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+
 vault:
   enabled: true
   address: "https://test-vault.lra-poc.com"
