@@ -19,9 +19,17 @@ spec:
       image: docker:20.10.24
       command: ["cat"]
       tty: true
+      securityContext:
+        privileged: true  # Enable privileged mode for Docker-in-Docker
       volumeMounts:
         - name: docker-sock
           mountPath: /var/run/docker.sock
+    - name: git
+      image: alpine/git
+      command: ["sleep", "infinity"]
+    - name: kubectl
+      image: bitnami/kubectl
+      command: ["sleep", "infinity"]
   volumes:
     - name: docker-sock
       hostPath:
@@ -37,14 +45,16 @@ spec:
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/nitin1materialplus/LRA.git'
+                container('git') {
+                    git 'https://github.com/nitin1materialplus/LRA.git'
+                }
             }
         }
         stage('Build Docker Image') {
             steps {
                 container('docker') {
                     dir('node-app')
-                        sh "docker build -t $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG ."
+                         sh "docker build -t $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG ."
                 }
             }
         }
@@ -59,7 +69,9 @@ spec:
         }
         stage('Deploy via ArgoCD') {
             steps {
-                sh "kubectl apply -f helm/values.yaml"
+                container('kubectl') {
+                    sh "kubectl apply -f helm/values.yaml"
+                }
             }
         }
     }
