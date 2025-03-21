@@ -1,4 +1,3 @@
- 
 pipeline {
     agent {
         kubernetes {
@@ -18,13 +17,23 @@ spec:
           memory: 256Mi
     - name: docker
       image: docker:20.10.24
-      command: ["cat"]
-      tty: true
-      securityContext:
-        privileged: true
+      command: ["sh", "-c", "sleep infinity"]
+      env:
+        - name: DOCKER_HOST
+          value: tcp://localhost:2375
       volumeMounts:
         - name: docker-sock
           mountPath: /var/run/docker.sock
+    - name: dind
+      image: docker:20.10.24-dind
+      securityContext:
+        privileged: true
+      env:
+        - name: DOCKER_TLS_CERTDIR
+          value: ""
+      volumeMounts:
+        - name: dind-storage
+          mountPath: /var/lib/docker
     - name: git
       image: alpine/git
       command: ["sleep", "infinity"]
@@ -33,8 +42,9 @@ spec:
       command: ["sleep", "infinity"]
   volumes:
     - name: docker-sock
-      hostPath:
-        path: /var/run/docker.sock
+      emptyDir: {}
+    - name: dind-storage
+      emptyDir: {}
 """
         }
     }
