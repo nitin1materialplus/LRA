@@ -54,7 +54,7 @@ spec:
             steps {
                 container('docker') {
                     sh """
-                        docker build -t $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG .
+                        docker build -t $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG node-app/
                     """
                 }
             }
