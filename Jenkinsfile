@@ -7,11 +7,12 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/nitin1materialplus/node-app.git'
+                git 'https://github.com/nitin1materialplus/LRA.git'
             }
         }
         stage('Build Docker Image') {
             steps {
+                sh "cd node-app/"
                 sh "docker build -t ${HARBOR_REGISTRY}:${IMAGE_TAG} ."
             }
         }
