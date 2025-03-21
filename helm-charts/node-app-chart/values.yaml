@@ -20,6 +20,10 @@ ingress:
         - test-node-app.lra-poc.com
       secretName: node-app-tls
 
+serviceAccount:
+  create: true
+  name: "node-app-sa"
+
 vault:
   enabled: true
   address: "https://test-vault.lra-poc.com"
