@@ -20,7 +20,7 @@ spec:
       command: ["cat"]
       tty: true
       securityContext:
-        privileged: true  # Enable privileged mode for Docker-in-Docker
+        privileged: true
       volumeMounts:
         - name: docker-sock
           mountPath: /var/run/docker.sock
@@ -46,15 +46,16 @@ spec:
         stage('Checkout Code') {
             steps {
                 container('git') {
-                    git 'https://github.com/nitin1materialplus/LRA.git'
+                    git credentialsId: 'github-token', url: 'https://github.com/nitin1materialplus/LRA.git'
                 }
             }
         }
         stage('Build Docker Image') {
             steps {
                 container('docker') {
-                    dir('node-app')
-                         sh "docker build -t $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG ."
+                    sh """
+                        docker build -t $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG .
+                    """
                 }
             }
         }
@@ -70,7 +71,9 @@ spec:
         stage('Deploy via ArgoCD') {
             steps {
                 container('kubectl') {
-                    sh "kubectl apply -f helm/values.yaml"
+                    sh """
+                        kubectl apply -f helm/values.yaml
+                    """
                 }
             }
         }
