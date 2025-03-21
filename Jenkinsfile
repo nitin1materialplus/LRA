@@ -15,25 +15,29 @@ spec:
         requests:
           cpu: 500m
           memory: 256Mi
-    - name: docker
-      image: docker:20.10.24
-      command: ["cat"]
-      tty: true
-      securityContext:
-        privileged: true
-      volumeMounts:
-        - name: docker-sock
-          mountPath: /var/run/docker.sock
     - name: git
       image: alpine/git
       command: ["sleep", "infinity"]
     - name: kubectl
       image: bitnami/kubectl
       command: ["sleep", "infinity"]
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:latest
+      command:
+        - "/kaniko/executor"
+      args:
+        - "--dockerfile=Dockerfile"
+        - "--context=dir:///workspace/node-app"
+        - "--destination=test-harbor.lra-poc.com/library/node-app:latest"
+        - "--skip-tls-verify"
+      volumeMounts:
+        - name: kaniko-secret
+          mountPath: /kaniko/.docker
+          readOnly: true
   volumes:
-    - name: docker-sock
-      hostPath:
-        path: /var/run/docker.sock
+    - name: kaniko-secret
+      secret:
+        secretName: harbor-credentials
 """
         }
     }
@@ -50,21 +54,15 @@ spec:
                 }
             }
         }
-        stage('Build Docker Image') {
+        stage('Build and Push Docker Image') {
             steps {
-                container('docker') {
+                container('kaniko') {
                     sh """
-                        docker build -t $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG node-app/
+                        /kaniko/executor --dockerfile=Dockerfile \
+                                         --context=dir:///workspace/node-app \
+                                         --destination=$HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG \
+                                         --skip-tls-verify
                     """
-                }
-            }
-        }
-        stage('Push to Harbor') {
-            steps {
-                container('docker') {
-                    withDockerRegistry([credentialsId: 'harbor-credentials', url: 'https://test-harbor.lra-poc.com']) {
-                        sh "docker push $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-                    }
                 }
             }
         }
