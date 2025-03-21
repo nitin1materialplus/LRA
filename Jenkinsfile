@@ -44,6 +44,7 @@ spec:
                 container('docker') {
                     sh "ls"
                     sh "cd node-app"
+                    sh "ls"
                     sh "docker build -t ${HARBOR_REGISTRY}:${IMAGE_TAG} ."
                 }
             }
