@@ -14,7 +14,7 @@ spec:
       labels:
         app: {{ .Release.Name }}
     spec:
-      serviceAccountName: vault-auth
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       containers:
         - name: node-app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
