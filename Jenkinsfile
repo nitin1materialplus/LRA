@@ -9,19 +9,6 @@ metadata:
     jenkins/label: "node-app"
 spec:
   containers:
-  - name: docker
-    image: docker:20.10.24
-    command:
-    - cat
-    tty: true
-    env:
-    - name: DOCKER_HOST
-      value: "tcp://localhost:2375"
-    volumeMounts:
-    - mountPath: "/var/run/docker.sock"
-      name: "docker-sock"
-    - mountPath: "/home/jenkins/agent"
-      name: "workspace-volume"
   - name: dind
     image: docker:20.10.24-dind
     securityContext:
@@ -32,8 +19,14 @@ spec:
     volumeMounts:
     - mountPath: "/var/lib/docker"
       name: "dind-storage"
-    - mountPath: "/var/run/docker.sock"
-      name: "docker-sock"
+  - name: docker
+    image: docker:20.10.24
+    command:
+    - cat
+    tty: true
+    env:
+    - name: DOCKER_HOST
+      value: "tcp://localhost:2375"
   - name: git
     image: alpine/git
     command:
@@ -46,15 +39,11 @@ spec:
     tty: true
   volumes:
   - emptyDir: {}
-    name: "docker-sock"
-  - emptyDir: {}
     name: "dind-storage"
-  - emptyDir: {}
-    name: "workspace-volume"
 """
         }
     }
-    
+
     stages {
         stage('Checkout Code') {
             steps {
