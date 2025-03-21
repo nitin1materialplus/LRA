@@ -41,4 +41,6 @@ spec:
             steps {
                 git branch: 'master', url: 'https://github.com/nitin1materialplus/LRA.git'
             }
-}
+        } // <-- This closing brace was missing
+    } // <-- Closing brace for stages
+} // <-- Closing brace for pipeline
