@@ -77,5 +77,6 @@ spec:
                     sh 'kubectl apply -f helm-charts/node-app-chart/values.yaml'
                 }
             }
+        }
     }
 }
