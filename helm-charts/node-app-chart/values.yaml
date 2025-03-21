@@ -1,0 +1,17 @@
+image:
+  repository: test-harbor.lra-poc.com/library/node-app
+  tag: latest
+replicaCount: 2
+service:
+  type: ClusterIP
+  port: 3000
+ingress:
+  enabled: true
+  hosts:
+    - host: test-node-app.lra-poc.com
+      paths:
+        - /
+  tls:
+    - hosts:
+        - test-node-app.lra-poc.com
+      secretName: node-app-tls
