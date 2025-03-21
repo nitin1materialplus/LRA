@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        dockerContainer {
+        kubernetes {
             image 'jenkins/agent-docker'
             args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
         }
