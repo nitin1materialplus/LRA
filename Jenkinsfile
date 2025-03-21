@@ -19,8 +19,6 @@ spec:
       image: docker:20.10.24
       command: ["cat"]
       tty: true
-      securityContext:
-        privileged: true
       volumeMounts:
         - name: docker-sock
           mountPath: /var/run/docker.sock
@@ -39,8 +37,30 @@ spec:
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/nitin1materialplus/LRA.git'
+                git 'https://github.com/nitin1materialplus/LRA.git'
             }
-        } // <-- This closing brace was missing
-    } // <-- Closing brace for stages
-} // <-- Closing brace for pipeline
+        }
+        stage('Build Docker Image') {
+            steps {
+                container('docker') {
+                    dir('node-app')
+                        sh "docker build -t $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG ."
+                }
+            }
+        }
+        stage('Push to Harbor') {
+            steps {
+                container('docker') {
+                    withDockerRegistry([credentialsId: 'harbor-credentials', url: 'https://test-harbor.lra-poc.com']) {
+                        sh "docker push $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+                    }
+                }
+            }
+        }
+        stage('Deploy via ArgoCD') {
+            steps {
+                sh "kubectl apply -f helm/values.yaml"
+            }
+        }
+    }
+}
