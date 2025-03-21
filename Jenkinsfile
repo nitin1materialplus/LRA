@@ -70,13 +70,5 @@ spec:
                 }
             }
         }
-
-        stage('Deploy Application') {
-            steps {
-                container('kubectl') {
-                    sh 'kubectl apply -f k8s/deployment.yaml'
-                }
-            }
-        }
     }
 }
