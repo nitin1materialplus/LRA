@@ -1,8 +1,32 @@
 pipeline {
     agent {
         kubernetes {
-            image 'jenkins/agent-docker'
-            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+            yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+    - name: jnlp
+      image: jenkins/inbound-agent
+      resources:
+        limits:
+          cpu: 1
+          memory: 512Mi
+        requests:
+          cpu: 500m
+          memory: 256Mi
+    - name: docker
+      image: docker:20.10.24
+      command: ["cat"]
+      tty: true
+      volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+"""
         }
     }
     environment {
@@ -17,14 +41,18 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh "cd node-app/"
-                sh "docker build -t ${HARBOR_REGISTRY}:${IMAGE_TAG} ."
+                container('docker') {
+                    sh "cd node-app/"
+                    sh "docker build -t ${HARBOR_REGISTRY}:${IMAGE_TAG} ."
+                }
             }
         }
         stage('Push to Harbor') {
             steps {
-                withDockerRegistry([credentialsId: 'harbor-credentials', url: 'https://test-harbor.lra-poc.com']) {
-                    sh "docker push ${HARBOR_REGISTRY}:${IMAGE_TAG}"
+                container('docker') {
+                    withDockerRegistry([credentialsId: 'harbor-credentials', url: 'https://test-harbor.lra-poc.com']) {
+                        sh "docker push ${HARBOR_REGISTRY}:${IMAGE_TAG}"
+                    }
                 }
             }
         }
