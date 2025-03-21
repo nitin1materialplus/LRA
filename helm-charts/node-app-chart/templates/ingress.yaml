@@ -6,12 +6,16 @@ metadata:
     kubernetes.io/ingress.class: "{{ .Values.ingress.className }}"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  {{- if .Values.ingress.tls }}
   tls:
+    {{- range .Values.ingress.tls }}
     - hosts:
-        {{- range .Values.ingress.tls.0.hosts }}
+        {{- range .hosts }}
         - {{ . }}
         {{- end }}
-      secretName: {{ .Values.ingress.tls.0.secretName }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
   rules:
     {{- range .Values.ingress.hosts }}
     - host: {{ .host }}
