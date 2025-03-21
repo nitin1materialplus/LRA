@@ -43,7 +43,9 @@ spec:
 """
         }
     }
-
+    environment {
+        ARGOCD_SERVER = "https://test-argocd.lra-poc.com"
+    }
     stages {
         stage('Checkout Code') {
             steps {
@@ -74,11 +76,13 @@ spec:
         stage('Trigger ArgoCD Sync') {
             steps {
                 container('argocd') {
-                    sh '''
-                    argocd login $ARGOCD_SERVER --username admin --password <ARGOCD_PASSWORD> --insecure
-                    argocd app sync node-app
-                    argocd app wait node-app --health
-                    '''
+                    withCredentials([usernamePassword(credentialsId: 'argocd-credentials', usernameVariable: 'ARGOCD_USER', passwordVariable: 'ARGOCD_PASSWORD')]) {
+                        sh '''
+                        argocd login $ARGOCD_SERVER --username $ARGOCD_USER --password $ARGOCD_PASSWORD --insecure
+                        argocd app sync node-app
+                        argocd app wait node-app --health
+                        '''
+                    }
                 }
             }
         }
