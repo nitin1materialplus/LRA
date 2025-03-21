@@ -3,9 +3,9 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}-ingress
   annotations:
-    kubernetes.io/ingress.class: "{{ .Values.ingress.className }}"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  ingressClassName: "{{ .Values.ingress.className }}"  # ✅ Correct way to specify ingress class
   {{- if .Values.ingress.tls }}
   tls:
     {{- range .Values.ingress.tls }}
