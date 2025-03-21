@@ -71,10 +71,14 @@ spec:
             }
         }
 
-        stage('Deploy Application') {
+        stage('Trigger ArgoCD Sync') {
             steps {
-                container('kubectl') {
-                    sh 'kubectl apply -f helm-charts/node-app-chart/values.yaml'
+                container('argocd') {
+                    sh '''
+                    argocd login $ARGOCD_SERVER --username admin --password <ARGOCD_PASSWORD> --insecure
+                    argocd app sync node-app
+                    argocd app wait node-app --health
+                    '''
                 }
             }
         }
