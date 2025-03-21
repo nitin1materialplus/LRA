@@ -43,7 +43,7 @@ spec:
             steps {
                 container('docker') {
                     sh "ls"
-                    sh "cd LRA/node-app/"
+                    sh "cd node-app"
                     sh "docker build -t ${HARBOR_REGISTRY}:${IMAGE_TAG} ."
                 }
             }
