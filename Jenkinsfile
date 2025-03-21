@@ -37,6 +37,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: argocd
+    image: quay.io/argoproj/argocd:v2.7.4  # Add the correct ArgoCD image
+    command:
+    - cat
+    tty: true
   volumes:
   - emptyDir: {}
     name: "dind-storage"
