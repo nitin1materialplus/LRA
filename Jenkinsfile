@@ -16,60 +16,29 @@ spec:
           cpu: 500m
           memory: 256Mi
     - name: docker
-      image: docker:20.10.24-dind
+      image: docker:20.10.24
+      command: ["cat"]
+      tty: true
       securityContext:
         privileged: true
-      args:
-        - --tls=false
-      env:
-        - name: DOCKER_HOST
-          value: tcp://localhost:2375
       volumeMounts:
-        - name: docker-graph-storage
-          mountPath: /var/lib/docker
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
   volumes:
-    - name: docker-graph-storage
-      emptyDir: {}
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
 """
         }
     }
-
     environment {
         HARBOR_REGISTRY = "test-harbor.lra-poc.com"
         IMAGE_NAME = "library/node-app"
         IMAGE_TAG = "latest"
     }
-
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/nitin1materialplus/LRA.git'
+                git branch: 'master', url: 'https://github.com/nitin1materialplus/LRA.git'
             }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                container('docker') {
-                    script {
-                        sh "docker build -t $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG ."
-                    }
-                }
-            }
-        }
-
-        stage('Push to Harbor') {
-            steps {
-                container('docker') {
-                    withDockerRegistry([credentialsId: 'harbor-credentials', url: "https://$HARBOR_REGISTRY"]) {
-                        sh "docker push $HARBOR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-                    }
-                }
-            }
-        }
-
-        stage('Deploy via ArgoCD') {
-            steps {
-                script {
-                    sh "kubectl apply -f helm/values.yaml"
-                }
-            }
+}
