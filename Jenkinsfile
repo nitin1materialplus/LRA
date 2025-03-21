@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'jenkins/agent-docker'
+            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     environment {
         HARBOR_REGISTRY = "test-harbor.lra-poc.com/library/node-app"
         IMAGE_TAG = "latest"
@@ -30,4 +35,3 @@ pipeline {
         }
     }
 }
-
