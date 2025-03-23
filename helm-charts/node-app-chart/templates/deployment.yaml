@@ -13,6 +13,15 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
+    annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "{{ .Values.vault.role }}"
+        vault.hashicorp.com/agent-inject-secret-db-config: "{{ .Values.vault.secretPath }}"
+        vault.hashicorp.com/agent-inject-template-db-config: |
+          {{- range $key, $value := .Values.vault.secretKeys }}
+          export {{ $key }}="{{`{{ with secret \"`}}{{ $.Values.vault.secretPath }}{{`\" }}{{ .Data.data.`}}{{$value}}{{`}}`}}"
+          {{- end }}
+      {{- end }}
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       containers:
