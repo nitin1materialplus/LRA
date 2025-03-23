@@ -55,15 +55,42 @@ spec:
         ARGOCD_SERVER = "https://test-argocd.lra-poc.com"
     }
     stages {
+        stage('Checkout Code') {
+            steps {
+                container('git') {
+                    git branch: 'master', credentialsId: 'github-token', url: 'https://github.com/nitin1materialplus/LRA.git'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                container('docker') {
+                    sh 'docker build -t test-harbor.lra-poc.com/library/node-app:latest node-app/'
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                container('docker') {
+                    withDockerRegistry([url: 'https://test-harbor.lra-poc.com', credentialsId: 'harbor-credentials']) {
+                        sh 'docker push test-harbor.lra-poc.com/library/node-app:latest'
+                    }
+                }
+            }
+        }
 
         stage('Trigger ArgoCD Sync') {
             steps {
                 container('argocd') {
+                    withCredentials([usernamePassword(credentialsId: 'argocd-credentials', usernameVariable: 'ARGOCD_USER', passwordVariable: 'ARGOCD_PASSWORD')]) {
                         sh '''
-                        argocd login test-argocd.lra-poc.com --username admin --password Charvisuhani@1963 --insecure --grpc-web
+                        argocd login $ARGOCD_SERVER --username $ARGOCD_USER --password $ARGOCD_PASSWORD --insecure --grpc-web
                         argocd app sync node-app --server test-argocd.lra-poc.com --grpc-web
-                        argocd app wait node-app --health --server test-argocd.lra-poc.com --grpc-web
+                        argocd app wait node-app --health --server $ARGOCD_SERVER --grpc-web
                         '''
+                    }
                 }
             }
         }
