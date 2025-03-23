@@ -52,7 +52,7 @@ spec:
         }
     }
     environment {
-        ARGOCD_SERVER = "https://test-argocd.lra-poc.com"
+        ARGOCD_SERVER = "test-argocd.lra-poc.com"
     }
     stages {
         stage('Checkout Code') {
