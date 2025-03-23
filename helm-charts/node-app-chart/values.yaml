@@ -1,17 +1,32 @@
 image:
   repository: test-harbor.lra-poc.com/library/node-app
   tag: latest
+
 replicaCount: 2
+
 service:
   type: ClusterIP
   port: 3000
+
 ingress:
   enabled: true
+  className: nginx
   hosts:
     - host: test-node-app.lra-poc.com
       paths:
-        - /
+        - path: /
+          pathType: ImplementationSpecific
   tls:
     - hosts:
         - test-node-app.lra-poc.com
-      secretName: node-app-tls
+      secretName: node-app-tls  # Matches the cert-manager secret name
+
+serviceAccount:
+  create: true
+  name: "node-app-sa"
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
