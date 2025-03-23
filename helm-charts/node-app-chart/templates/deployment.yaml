@@ -13,6 +13,15 @@ spec:
     metadata:
       labels:
         app: {{ .Release.Name }}
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "{{ .Values.vault.role }}"
+        vault.hashicorp.com/agent-inject-secret-config: "{{ .Values.vault.secretPath }}"
+        vault.hashicorp.com/agent-inject-template-config: |
+          {{`{{- with secret "`}}{{ .Values.vault.secretPath }}{{`" -}}
+          export DB_USERNAME={{ .Data.data.DB_USERNAME }}
+          export DB_PASSWORD={{ .Data.data.DB_PASSWORD }}
+          {{- end }}`}}
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       containers:
@@ -20,3 +29,15 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
             - containerPort: 3000
+          env:
+            - name: VAULT_ADDR
+              value: "{{ .Values.vault.address }}"
+            - name: VAULT_SECRET_PATH
+              value: "{{ .Values.vault.secretPath }}"
+          volumeMounts:
+            - name: vault-secrets
+              mountPath: /vault/secrets
+              readOnly: true
+      volumes:
+        - name: vault-secrets
+          emptyDir: {}
