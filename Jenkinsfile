@@ -41,7 +41,7 @@ spec:
     image: quay.io/argoproj/argocd:v2.7.4  # Add the correct ArgoCD image
     command: ["/bin/sh", "-c"]
     args:
-      - apt update && apt install -y curl iputils-ping dnsutils telnet netcat;
+      - "USER=0 apt update && apt install -y curl iputils-ping dnsutils telnet netcat; sleep infinity"
     tty: true
   volumes:
   - emptyDir: {}
