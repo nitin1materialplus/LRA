@@ -39,8 +39,9 @@ spec:
     tty: true
   - name: argocd
     image: quay.io/argoproj/argocd:v2.7.4  # Add the correct ArgoCD image
-    command:
-    - cat
+    command: ["/bin/sh", "-c"]
+    args:
+      - apt update && apt install -y curl iputils-ping dnsutils telnet netcat;
     tty: true
   volumes:
   - emptyDir: {}
