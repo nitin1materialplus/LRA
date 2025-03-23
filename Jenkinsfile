@@ -61,7 +61,8 @@ spec:
                 container('argocd') {
                         sh '''
                         argocd login test-argocd.lra-poc.com --username admin --password Charvisuhani@1963 --insecure --grpc-web
-                        argocd app list --server test-argocd.lra-poc.com --grpc-web
+                        argocd app sync node-app --server test-argocd.lra-poc.com --grpc-web
+                        argocd app wait node-app --health --server test-argocd.lra-poc.com --grpc-web
                         '''
                 }
             }
