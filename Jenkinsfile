@@ -60,8 +60,8 @@ spec:
             steps {
                 container('argocd') {
                         sh '''
-                        argocd login test-argocd.lra-poc.com --username admin --password Charvisuhani@1963 --insecure
-                        argocd app list --grpc-web
+                        argocd login test-argocd.lra-poc.com --username admin --password Charvisuhani@1963 --insecure --grpc-web
+                        argocd app list --server test-argocd.lra-poc.com --grpc-web
                         '''
                 }
             }
