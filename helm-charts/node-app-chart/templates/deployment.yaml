@@ -34,10 +34,3 @@ spec:
               value: "{{ .Values.vault.address }}"
             - name: VAULT_SECRET_PATH
               value: "{{ .Values.vault.secretPath }}"
-          volumeMounts:
-            - name: vault-secrets
-              mountPath: /vault/secrets
-              readOnly: true
-      volumes:
-        - name: vault-secrets
-          emptyDir: {}
