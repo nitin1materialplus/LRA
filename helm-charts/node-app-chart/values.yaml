@@ -21,6 +21,14 @@ ingress:
         - test-node-app.lra-poc.com
       secretName: node-app-tls  # Matches the cert-manager secret name
 
+vault:
+  enabled: true
+  role: "node-app-role"
+  secretPath: "secret/data/node-app"
+  secretKeys:
+    DB_USER: "DB_USER"
+    DB_PASSWORD: "DB_PASSWORD"
+
 serviceAccount:
   create: true
   name: "node-app-sa"
