@@ -56,13 +56,11 @@ spec:
         stage('Trigger ArgoCD Sync') {
             steps {
                 container('argocd') {
-                    withCredentials([usernamePassword(credentialsId: 'argocd-credentials', usernameVariable: 'ARGOCD_USER', passwordVariable: 'ARGOCD_PASSWORD')]) {
                         sh '''
-                        argocd login $ARGOCD_SERVER --username $ARGOCD_USER --password $ARGOCD_PASSWORD --insecure
+                        argocd login https://test-argocd.lra-poc.com --username admin --password Charvisuhani@1963 --insecure
                         argocd app sync node-app
                         argocd app wait node-app --health
                         '''
-                    }
                 }
             }
         }
