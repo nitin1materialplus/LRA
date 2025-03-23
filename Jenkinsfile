@@ -39,9 +39,11 @@ spec:
     tty: true
   - name: argocd
     image: quay.io/argoproj/argocd:v2.7.4  # Add the correct ArgoCD image
+    securityContext:
+      runAsUser: 0  # Run as root
     command: ["/bin/sh", "-c"]
     args:
-      - "USER=0 apt update && apt install -y curl iputils-ping dnsutils telnet netcat; sleep infinity"
+      - "apt update && apt install -y curl iputils-ping dnsutils telnet netcat; sleep infinity"
     tty: true
   volumes:
   - emptyDir: {}
