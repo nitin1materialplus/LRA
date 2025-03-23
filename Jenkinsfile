@@ -38,12 +38,10 @@ spec:
     - cat
     tty: true
   - name: argocd
-  image: quay.io/argoproj/argocd:v2.7.4
-  command: ["/bin/sh", "-c"]
-  args:
-    - apt update && apt install -y curl iputils-ping dnsutils telnet netcat;
-      sleep infinity
-  tty: true
+    image: quay.io/argoproj/argocd:v2.7.4  # Add the correct ArgoCD image
+    command:
+    - cat
+    tty: true
   volumes:
   - emptyDir: {}
     name: "dind-storage"
