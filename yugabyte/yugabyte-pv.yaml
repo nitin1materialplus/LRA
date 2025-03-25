@@ -1,0 +1,281 @@
+apiVersion: v1
+kind: PersistentVolumeList
+items:
+  # Master PVs
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir0-yb-master-0
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-master-0-datadir0
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir1-yb-master-0
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-master-0-datadir1
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir0-yb-master-1
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-master-1-datadir0
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir1-yb-master-1
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-master-1-datadir1
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir0-yb-master-2
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-master-2-datadir0
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir1-yb-master-2
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-master-2-datadir1
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  # TServer PVs
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir0-yb-tserver-0
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-tserver-0-datadir0
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir1-yb-tserver-0
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-tserver-0-datadir1
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir0-yb-tserver-1
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-tserver-1-datadir0
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir1-yb-tserver-1
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-tserver-1-datadir1
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir0-yb-tserver-2
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-tserver-2-datadir0
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+
+  - apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: pv-datadir1-yb-tserver-2
+    spec:
+      capacity:
+        storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Retain
+      storageClassName: yugabyte-storage
+      local:
+        path: /mnt/yugabyte/yb-tserver-2-datadir1
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - ip-141-0-4-11.eu-central-1.compute.internal
+                    - ip-141-0-4-216.eu-central-1.compute.internal
+

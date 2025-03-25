@@ -1,0 +1,74 @@
+storage:
+  storageClass: "yugabyte-storage"
+
+service:
+  type: ClusterIP
+
+ybMasterUI:
+  service:
+    type: ClusterIP  # Override LoadBalancer with ClusterIP
+
+ybTserverService:
+  service:
+    type: ClusterIP  # Override LoadBalancer with ClusterIP
+
+yugabytedUI:
+  service:
+    type: ClusterIP  # Override LoadBalancer with ClusterIP
+
+master:
+  volume:
+    existingClaim:
+      - datadir0-yb-master-0
+      - datadir1-yb-master-0
+      - datadir0-yb-master-1
+      - datadir1-yb-master-1
+      - datadir0-yb-master-2
+      - datadir1-yb-master-2
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+
+tserver:
+  volume:
+    existingClaim:
+      - datadir0-yb-tserver-0
+      - datadir1-yb-tserver-0
+      - datadir0-yb-tserver-1
+      - datadir1-yb-tserver-1
+      - datadir0-yb-tserver-2
+      - datadir1-yb-tserver-2
+  resources:
+    requests:
+      cpu: "250m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "256Mi"
+
+replicaCount: 3
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: test-yugabyte.lra-poc.com
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: yb-master-ui
+              port:
+                number: 7000
+  tls:
+    - hosts:
+        - test-yugabyte.lra-poc.com
+      secretName: yugabyte-tls

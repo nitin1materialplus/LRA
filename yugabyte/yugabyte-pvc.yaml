@@ -1,0 +1,155 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir0-yb-master-0
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir1-yb-master-0
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir0-yb-master-1
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir1-yb-master-1
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir0-yb-master-2
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir1-yb-master-2
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir0-yb-tserver-0
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+      requests:
+        storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir1-yb-tserver-0
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+      requests:
+        storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir0-yb-tserver-1
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+      requests:
+        storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir1-yb-tserver-1
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+      requests:
+        storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir0-yb-tserver-2
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+      requests:
+        storage: 1Gi
+  storageClassName: yugabyte-storage
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: datadir1-yb-tserver-2
+  namespace: yugabyte
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+      requests:
+        storage: 1Gi
+  storageClassName: yugabyte-storage
